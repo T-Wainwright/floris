@@ -12,6 +12,8 @@
 import numpy as np
 from scipy.optimize import minimize
 import matplotlib.pyplot as plt
+from tests.sample_inputs import SampleInputs
+import json
 
 # import warnings
 # warnings.simplefilter('ignore', RuntimeWarning)
@@ -75,6 +77,7 @@ class lay_opt:
         self.x_space = x_space
         self.y_space = y_space
         self.n_turb = n_row*n_col
+        self.farm = []
 
         # Create array to store turbine positions
         self.positions = np.zeros((self.n_turb,2))
@@ -117,3 +120,15 @@ class lay_opt:
                 # Apply perturbation vector
                 self.positions[ii,:] = self.positions[ii,:] + np.matmul(self.T,delta)
                 ii=ii+1
+
+    def write2json(self,Input_file,name,description):
+        farm1 = SampleInputs()
+        
+        farm1.farm["properties"]["layout_x"]=self.positions[:,0].tolist()
+        farm1.farm["properties"]["layout_y"]=self.positions[:,1].tolist()
+
+        farm2 = {"type" : "floris_input", "name" : name, "description" : description, "farm" : farm1.farm,"turbine" : farm1.turbine, "wake" : farm1.wake}
+
+        with open(Input_file, 'w') as f:
+            json.dump(farm2, f,sort_keys=True, indent=2, separators=(',', ': '))
+
