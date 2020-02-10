@@ -23,9 +23,9 @@ fi.floris.farm.set_wake_model('curl')
 
 # Change the layout
 D = fi.floris.farm.flow_field.turbine_map.turbines[0].rotor_diameter
-layout_x = [0, 7*D, 14*D]
-layout_y = [0, 0, 0]
-fi.reinitialize_flow_field(layout_array=(layout_x, layout_y))
+layout_x = [0, 7*D, 0, 7*D]
+layout_y = [0, 0, 7*D, 7*D]
+fi.reinitialize_flow_field(layout_array=(layout_x, layout_y), wind_direction=100)
 
 # Calculate wake
 fi.calculate_wake(yaw_angles=[25,0,0])
