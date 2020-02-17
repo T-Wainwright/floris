@@ -112,7 +112,6 @@ class lay_opt:
     
     def modify(self,x_row_shift,x_col_shift,y_row_shift,y_col_shift):
         ii = 0
-
         for j in range(self.n_col):
             for i in range(self.n_row):
                 # Create perturbation vector
