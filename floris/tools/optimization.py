@@ -106,9 +106,14 @@ class lay_opt:
         plt.show()
 
     def write_out(self,ftag):
-        with open(ftag, 'w') as f:
+        x_string = ftag + 'x'
+        y_string = ftag + 'y'
+        with open(x_string, 'w') as f:
             for point in self.positions:
-                f.write("%f, %f\n" % (point[0], point[1]))
+                f.write("%f,\n" % (point[0]))
+        with open(y_string, 'w') as f:
+            for point in self.positions:
+                f.write("%f,\n" % (point[1]))
     
     def modify(self,x_row_shift,x_col_shift,y_row_shift,y_col_shift):
         ii = 0

@@ -73,11 +73,13 @@ x_bnds = [(-2*D, 2*D) for i in range(n_col)]
 y_bnds = [(-2*D, 2*D) for i in range(n_col)]
 bnds = x_bnds + y_bnds
 
+print(bnds)
+
 """ Optimization Unit- local and global options available here, currently just using a bounded problem"""
 
 i_max = 100     # Maximum number of optimization iterations
-# res = opt.minimize(costfunc,x0,bounds=bnds,options={'gtol': 1e-8, 'disp': True, 'maxiter' : i_max},) # Default L-BFGS-B
-res = opt.dual_annealing(costfunc,bounds=bnds,maxiter=i_max) # Simulated annealing
+res = opt.minimize(costfunc,x0,bounds=bnds,options={'gtol': 1e-8, 'disp': True, 'maxiter' : i_max},) # Default L-BFGS-B
+# res = opt.dual_annealing(costfunc,bounds=bnds,maxiter=i_max) # Simulated annealing
 
 # Display results
 

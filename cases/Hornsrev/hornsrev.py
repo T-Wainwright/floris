@@ -16,7 +16,7 @@ import floris.tools as wfct
 import time
 
 # Initialize the FLORIS interface fi
-fi = wfct.floris_utilities.FlorisInterface("TEST.json")
+fi = wfct.floris_utilities.FlorisInterface("hornsrev.json")
 
 # Change the wake model
 fi.floris.farm.set_wake_model('gauss')

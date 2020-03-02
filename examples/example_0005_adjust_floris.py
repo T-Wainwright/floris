@@ -17,6 +17,7 @@ import floris.tools.visualization as vis
 import floris.tools.cut_plane as cp
 import numpy as np
 from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
+import time
 
 # Initialize FLORIS model
 fi = wfct.floris_utilities.FlorisInterface("example_input.json")
@@ -49,70 +50,75 @@ wfct.visualization.visualize_cut_plane(hor_plane, ax=ax)
 print('Changing wind direction and wind speed...')
 # ================================================================================
 
-ws = np.linspace(6, 8, 3)
-wd = [45.0, 170.0, 270.]
+ws = 15
+wd = np.linspace(0,360,180)
 
 # Plot and show
 fig, ax = plt.subplots(3, 3, figsize=(15, 15))
-power = np.zeros((len(ws), len(wd)))
-for i, speed in enumerate(ws):
-    for j, wdir in enumerate(wd):
-        print('Calculating wake: wind direction = ',
-              wdir, 'and wind speed = ', speed)
+# power = np.zeros((len(ws), len(wd)))
+start = time.time()
+print('Begining loop')
+# for i, speed in enumerate(ws):
+for wdir in range(360, 2):
+    print('Calculating wake: wind direction = ',
+            wdir, 'and wind speed = ', ws)
 
-        fi.reinitialize_flow_field(wind_speed=speed, wind_direction=wdir)
+    fi.reinitialize_flow_field(wind_speed=ws, wind_direction=wdir)
 
-        # recalculate the wake
-        fi.calculate_wake()
+    # recalculate the wake
+    fi.calculate_wake()
 
-        # record powers
-        power[i, j] = np.sum(fi.get_turbine_power())
+    # record powers
+    # power[i, j] = np.sum(fi.get_turbine_power())
 
-        # ============================================
-        # not necessary if you only want the powers
-        # ============================================
-        # Visualize the changes
-        # Initialize the horizontal cut
-        hor_plane = wfct.cut_plane.HorPlane(
-            fi.get_flow_data(),
-            fi.floris.farm.turbines[0].hub_height
-        )
-        im = wfct.visualization.visualize_cut_plane(hor_plane, ax=ax[i, j])
-        strTitle = 'Wind Dir = ' + \
-            str(wdir) + 'deg' + ' Speed = ' + str(speed) + 'm/s'
-        ax[i, j].set_title(strTitle)
-        fig.colorbar(im, ax=ax[i, j], fraction=0.025, pad=0.04)
+    # ============================================
+    # not necessary if you only want the powers
+    # ============================================
+    # Visualize the changes
+    # Initialize the horizontal cut
+    # hor_plane = wfct.cut_plane.HorPlane(
+    #     fi.get_flow_data(),
+    #     fi.floris.farm.turbines[0].hub_height
+    # )
+    # im = wfct.visualization.visualize_cut_plane(hor_plane, ax=ax[i, j])
+    # strTitle = 'Wind Dir = ' + \
+    #     str(wdir) + 'deg' + ' Speed = ' + str(speed) + 'm/s'
+    # ax[i, j].set_title(strTitle)
+    # fig.colorbar(im, ax=ax[i, j], fraction=0.025, pad=0.04)
+
+finish = time.time()
+print('Time to calculate flow field', finish - start)
 
 # ================================================================================
 # print('Set yaw angles...')
 # ================================================================================
 
 # assign yaw angles to turbines and calculate wake at 270
-# initial power output
-fi.calculate_wake()
-power_initial = np.sum(fi.get_turbine_power())
+# # initial power output
+# fi.calculate_wake()
+# power_initial = np.sum(fi.get_turbine_power())
 
 # Set the yaw angles
-yaw_angles = [25.0, 0, 25.0, 0]
-fi.calculate_wake(yaw_angles=yaw_angles)
+# yaw_angles = [25.0, 0, 25.0, 0]
+# fi.calculate_wake(yaw_angles=yaw_angles)
 
 # Check the new power
-power_yaw = np.sum(fi.get_turbine_power())
-print('Power aligned: %.1f' % power_initial)
-print('Power yawed: %.1f' % power_yaw)
+# power_yaw = np.sum(fi.get_turbine_power())
+# print('Power aligned: %.1f' % power_initial)
+# print('Power yawed: %.1f' % power_yaw)
 
 # ================================================================================
 print('Plotting the FLORIS flowfield with yaw...')
 # ================================================================================
 
 # Initialize the horizontal cut
-hor_plane = wfct.cut_plane.HorPlane(
-    fi.get_flow_data(),
-    fi.floris.farm.turbines[0].hub_height
-)
+# hor_plane = wfct.cut_plane.HorPlane(
+#     fi.get_flow_data(),
+#     fi.floris.farm.turbines[0].hub_height
+# )
 
-# Plot and show
-fig, ax = plt.subplots()
-wfct.visualization.visualize_cut_plane(hor_plane, ax=ax)
-ax.set_title('Flow with yawed front turbines')
-plt.show()
+# # Plot and show
+# fig, ax = plt.subplots()
+# wfct.visualization.visualize_cut_plane(hor_plane, ax=ax)
+# ax.set_title('Flow with yawed front turbines')
+# plt.show()

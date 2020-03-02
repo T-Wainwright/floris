@@ -29,19 +29,4 @@ y_space = 7*D
 Farm1 = optimization.lay_opt(n_row,n_col,x_skew,y_skew,D,x_space,y_space)
 Farm1.generate_grid()
 
-# Define perturbation vectors
-
-# Column shift directions
-y_col_shift = (0,2*D,0,0,0,0,0,0,0,0)
-x_col_shift = (0,0,0,0,0,5*D,0,0,0,0)
-
-# Row shift directions
-y_row_shift = (0,0,0,0,0,0,0,0)
-x_row_shift = (0,0,0,0,0,0,0,0)
-
-# Apply perturbations
-Farm1.modify(x_row_shift,x_col_shift,y_row_shift,y_col_shift)
-fi.reinitialize_flow_field(layout_array=(Farm1.positions[:,0].tolist(), Farm1.positions[:,1].tolist()))
-
-print(y_row_shift)
-Farm1.plot_farm()
+Farm1.write_out('hornsrev')
